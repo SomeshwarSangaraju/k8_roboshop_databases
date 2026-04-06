@@ -70,12 +70,22 @@ spec:
       containers:
       - name: mysql
         image: someshwarsangaraju/mysql:v1
+        # volumeMounts:
+        # - name: mysql
+        #   mountPath: /var/lib/mysql
+        # - name: mysql
+        #   mountPath: /etc/mysql/conf.d/my.cnf
+        #   subPath: my.cnf
         volumeMounts:
         - name: mysql
-          mountPath: /var/lib/mysql
-        - name: mysql
+          mountPath: /data/db
+        - name: mysql-config
           mountPath: /etc/mysql/conf.d/my.cnf
           subPath: my.cnf
+      volumes:
+        - name: mysql-config
+          configMap:
+            name: mysql
   volumeClaimTemplates:
   - metadata:
       name: mysql
