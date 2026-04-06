@@ -57,7 +57,7 @@ spec:
       - name: payment
         image: someshwarsangaraju/payment:v1
         envFrom:
-        - ConfigMapRef:
+        - configMapRef:
             name: payment
         # readinessProbe:
         #   httpGet:
