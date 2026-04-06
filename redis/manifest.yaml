@@ -19,7 +19,7 @@ metadata:
   name: redis-headless
   namespace: roboshop
 spec:
-  clusterIp: None
+  clusterIP: None
   selector:
     project: roboshop
     component: redis

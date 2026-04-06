@@ -20,7 +20,7 @@ metadata:
   name: rabbitmq-headless
   namespace: roboshop
 spec:
-  clusterIp: None
+  clusterIP: None
   selector:
     project: roboshop
     component: rabbitmq
