@@ -53,22 +53,11 @@ spec:
       - name: user
         image: someshwarsangaraju/user:v1
         envFrom:
-        - ConfigMapRef:
+        - configMapRef:
             name: user
-        readinessProbe:
-          httpGet:
-            port: 8080
-            path: /health
-          intialDelaySeconds: 60
-          failureThreshold: 15
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 15
+        ports:
+        - name: liveness-port
+          containerPort: 8080
         resources:
           requests:
             cpu: "100m"
@@ -76,6 +65,39 @@ spec:
           limits:
             cpu: "100m"
             memory: "128Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: liveness-port
+          failureThreshold: 1
+          periodSeconds: 15
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: liveness-port
+          failureThreshold: 1
+          periodSeconds: 15
+        # readinessProbe:
+        #   httpGet:
+        #     port: 8080
+        #     path: /health
+        #   intialDelaySeconds: 60
+        #   failureThreshold: 15
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8080
+        #   initialDelaySeconds: 60
+        #   periodSeconds: 10
+        #   failureThreshold: 15
+        # resources:
+        #   requests:
+        #     cpu: "100m"
+        #     memory: "128Mi"
+        #   limits:
+        #     cpu: "100m"
+        #     memory: "128Mi"
 
 ---
 

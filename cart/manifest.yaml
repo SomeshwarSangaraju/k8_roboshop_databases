@@ -53,29 +53,51 @@ spec:
       - name: cart
         image: someshwarsangaraju/cart:v1
         envFrom:
-        - ConfigMapRef:
+        - configMapRef:
             name: cart
+        ports:
+        - name: liveness-port
+          containerPort: 8080
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "218Mi"
         readinessProbe:
           httpGet:
-            port: 8080
             path: /health
-          intialDelaySeconds: 60
-          failureThreshold: 15
-          periodSeconds: 10
+            port: liveness-port
+          failureThreshold: 1
+          periodSeconds: 15
         livenessProbe:
           httpGet:
             path: /health
-            port: 8080
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          failureThreshold: 15
-        resources:
-          requests:
-            cpu: "200m"
-            memory: "218Mi"
-          limits:
-            cpu: "300m"
-            memory: "428Mi"
+            port: liveness-port
+          failureThreshold: 1
+          periodSeconds: 15
+        # readinessProbe:
+        #   httpGet:
+        #     port: 8080
+        #     path: /health
+        #   intialDelaySeconds: 60
+        #   failureThreshold: 15
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8080
+        #   initialDelaySeconds: 60
+        #   periodSeconds: 10
+        #   failureThreshold: 15
+        # resources:
+        #   requests:
+        #     cpu: "200m"
+        #     memory: "218Mi"
+        #   limits:
+        #     cpu: "300m"
+        #     memory: "428Mi"
 
 ---
 
