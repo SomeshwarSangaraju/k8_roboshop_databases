@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: shipping
-        image: someshwarsangaraju/shipping
+        image: someshwarsangaraju/shipping:v1
         envFrom:
         - ConfigMapRef:
             name: shipping

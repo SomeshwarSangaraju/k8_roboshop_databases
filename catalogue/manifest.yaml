@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: catalogue
-        image: someshwarsangaraju/catalogue
+        image: someshwarsangaraju/catalogue:v1
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
