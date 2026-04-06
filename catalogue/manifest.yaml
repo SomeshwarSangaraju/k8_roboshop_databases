@@ -51,21 +51,22 @@ spec:
       containers:
       - name: catalogue
         image: someshwarsangaraju/catalogue
+        imagePullPolicy: Always
         envFrom:
-        - ConfigMapRef:
+        - configMapRef:
             name: catalogue
         readinessProbe:
           httpGet:
             port: 8080
             path: /health
-          intialDelaySeconds: 60
+          # intialDelaySeconds: 60
           failureThreshold: 15
           periodSeconds: 10
         livenessProbe:
           httpGet:
             path: /health
             port: 8080
-          initialDelaySeconds: 60
+          # initialDelaySeconds: 60
           periodSeconds: 10
           failureThreshold: 15
         resources:
@@ -73,8 +74,8 @@ spec:
             cpu: "100m"
             memory: "128Mi"
           limits:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "200m"
+            memory: "218Mi"
 ---
 
 apiVersion: autoscaling/v2
