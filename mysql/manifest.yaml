@@ -73,7 +73,7 @@ spec:
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
-        - name: mysql-config
+        - name: mysql
           mountPath: /etc/mysql/conf.d/my.cnf
           subPath: my.cnf
   volumeClaimTemplates:
