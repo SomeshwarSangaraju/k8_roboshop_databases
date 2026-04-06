@@ -120,13 +120,13 @@ spec:
         readinessProbe:
           httpGet:
             port: 8080
-            path: /health
+            path: /
           intialDelaySeconds: 60
           failureThreshold: 15
           periodSeconds: 10
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 8080
           initialDelaySeconds: 60
           periodSeconds: 10
