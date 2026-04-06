@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  namespace: roboshop
+spec:
+  selector:
+    project: roboshop
+    component: catalogue
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: catalogue
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: roboshop
+      component: catalogue
+      tier: backend
+  template:
+    metadata:
+      name: catalogue
+      namespace: roboshop
+      labels:
+        project: roboshop
+        component: catalogue
+        tier: backend
+    spec:
+      containers:
+      - name: catalogue
+        image: someshwarsangaraju/catalogue
+        envFrom:
+        - ConfigMapRef:
+            name: catalogue
+        readinessProbe:
+          httpGet:
+            port: 8080
+            path: /health
+          intialDelaySeconds: 60
+          failureThreshold: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 15
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+---
+
+apiVersion: autoscaling/v2
+#apiVersion: autoscaling/v2beta2  # k8s 1.6+ - scale using the largest of multiple metrics
+kind: HorizontalPodAutoscaler
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: catalogue
+    tier: backend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: catalogue
+  minReplicas: 1
+  maxReplicas: 10
+  # targetCPUUtilizationPercentage: 70 # multiple metrics using autoscaling/v2beta2 - remove targetCPUUtilizationPercentage if using this
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    # - type: Resource
+    #   resource:
+    #     name: memory
+    #     #targetAverageValue: 250M
+    #     target:
+    #       type: AverageValue
+    #       averageValue: 250Mi
+
+
