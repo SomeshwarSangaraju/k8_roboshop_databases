@@ -114,23 +114,24 @@ spec:
       containers:
       - name: frontend
         image: someshwarsangaraju/frontend
-        envFrom:
-        - ConfigMapRef:
-            name: frontend
+        imagePullPolicy: Always
+        ports:
+        - name: liveness-port
+          containerPort: 8080
         readinessProbe:
           httpGet:
-            port: 8080
+            port: liveness-port
             path: /
-          intialDelaySeconds: 60
           failureThreshold: 15
           periodSeconds: 10
+          # intialDelaySeconds: 30
         livenessProbe:
           httpGet:
             path: /
-            port: 8080
-          initialDelaySeconds: 60
+            port: liveness-port
           periodSeconds: 10
           failureThreshold: 15
+          # initialDelaySeconds: 60
         resources:
           requests:
             cpu: "200m"

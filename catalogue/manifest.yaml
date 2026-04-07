@@ -28,6 +28,7 @@ kind: Deployment
 metadata:
   name: catalogue
   namespace: roboshop
+  # these are replica set labels
   labels:
     project: roboshop
     component: catalogue
@@ -35,10 +36,12 @@ metadata:
 spec:
   replicas: 1
   selector:
+   # these labels are used to select pods
     matchLabels:
       project: roboshop
       component: catalogue
       tier: backend
+  # pod definition
   template:
     metadata:
       name: catalogue
@@ -64,7 +67,7 @@ spec:
             memory: "128Mi"
           limits:
             cpu: "100m"
-            memory: "128Mi"
+            memory: "218Mi"
         readinessProbe:
           httpGet:
             path: /health
