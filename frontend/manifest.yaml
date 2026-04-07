@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: someshwarsangaraju/frontend
+        image: someshwarsangaraju/frontend:v1
         imagePullPolicy: Always
         ports:
         - name: liveness-port
